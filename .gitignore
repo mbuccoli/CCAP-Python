@@ -1,0 +1,20 @@
+
+a_json\.json
+
+a_np\.npy
+
+a_npz\.npz
+
+a_ntf\.txt
+
+a_pickle\.pickle
+
+\.ipynb_checkpoints/Classes-checkpoint\.ipynb
+
+\.ipynb_checkpoints/LoadAndStore-checkpoint\.ipynb
+
+\.ipynb_checkpoints/Machine Learning-checkpoint\.ipynb
+
+\.ipynb_checkpoints/PythonIntro-checkpoint\.ipynb
+
+*.pyc

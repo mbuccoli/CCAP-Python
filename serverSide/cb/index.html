@@ -1,0 +1,162 @@
+
+<html>
+	<head>
+		<title>Color bubbles</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="theme-color" content="#000000" />
+
+		<script src="./cb/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./cb/wcolpick/wcolpick.css" />
+		<script type="text/javascript" src="./cb/wcolpick/wcolpick.js"></script>
+		 <LINK href="./cb/colorbubbles.css?id=22" title="compact" rel="stylesheet" type="text/css">
+
+		
+<style>
+.wcolpick_noalpha .wcolpick_submit {
+    top: 171px;
+}
+
+.wcolpick_hex .wcolpick_submit {
+    left: 300px;
+}
+.wcolpick_submit {
+    width: 48px;
+    height: 48px;}
+.wcolpick_dark .wcolpick_submit {    
+    color: #fff;}
+</style>
+	</head>
+	<body>
+		<div id="area">
+			<div id="picking">
+				
+				<div id="mycolorpicker"></div>
+
+			</div>
+				<div id="ball">
+
+				</div>
+			</div>
+		<div id="colorPicker">
+			<h1>Pick a color!</h1>
+			
+			
+			<!--<input type="color" id="html5colorpicker" onchange="clickColor()" value="#000000"/>			-->
+			
+
+
+		</div>
+		
+	</body>
+	<script>
+	var id="";
+	var seconds=10;
+	$( document ).ready(start);
+	var c="#000000";
+
+	//var API='setColorProva.php';
+	var API='cb/setColor';
+	var result;
+	var pos;
+	var ball,hcp, footer;
+	var interval=null;
+	function start(){
+		console.log("The show begins");
+		var d=new Date();
+		ball=document.getElementById("ball");
+		id+=""+d.getMilliseconds();
+		id+=""+Math.round(Math.random()*1000);
+		
+
+		jQuery(function() { $('#mycolorpicker').loads(
+			{'alphaOutline':false,
+			 'enableAlpha':false,
+			 'colorScheme':'dark-full',
+			'onSubmit':clickColor,'layout':'hex','onLoaded':addClick}
+
+			); });
+		hcp=$('#mycolorpicker');
+		
+
+		//hcp.addEventListener('onsubmit',console.log);
+		footer=document.getElementById("colorPicker");
+		footer.addEventListener('click',openColorPicker);
+		
+
+		console.log(id);		
+	}
+	function openColorPicker(){
+		hcp.shows();
+
+	}
+
+	function addClick(){
+		document.getElementsByClassName('wcolpick_submit')[0].appendChild(document.createTextNode('Click'));
+
+	}
+	function clickColor(kwargs) {
+		c='#'+kwargs.hex;
+
+		console.log(c);	
+    		
+		//document.body.style.background=c;
+		footer.style.background=c;
+		ball.style.background=c;
+		$('meta[name=theme-color]').attr('content', c);
+		sendColor();
+		if(interval==null){
+			interval=setInterval(sendColor, Math.floor(1000*seconds));
+		}
+		hcp.hides();
+	}
+		
+		function sendColor(){
+			var url=API+"?color="+c.replace('#','')+"&id="+id;
+			console.log(url)
+			$.ajax({type: "GET", url: url, success:parsePosition, crossDomain : true});			
+		}		
+		function parsePosition(d){
+			
+			if (pos!=undefined){return;}			
+			//console.log(d);
+			pos=d.pos;
+			if(pos===undefined){
+				pos=JSON.parse(d).pos;
+			}
+			console.log(pos);
+			setPosition();
+		}
+		
+		function setPosition(){	
+			ball.style.left=5+70*pos[0]+"%";
+			ball.style.top=5+60*pos[1]+"%";
+			ball.style.display="block";
+			
+
+
+		}
+		function getRandomColor(){			
+			var R=Math.floor(Math.random()*255);
+			var G=Math.floor(Math.random()*255);
+			var B=Math.floor(Math.random()*255);
+			var R_=""; var G_=""; var B_="";
+			if(R<16){R_="0";}
+			if(G<16){G_="0";}
+			if(B<16){B_="0";}
+			var color=R_+R.toString(16)+G_+G.toString(16)+B_+B.toString(16);
+
+			return color;
+		}
+
+
+		function changeRandomColor(){			
+			var color=getRandomColor();
+			console.log(color);
+			document.body.style.background=color;
+			
+
+		}
+
+		</script>
+
+</html>
